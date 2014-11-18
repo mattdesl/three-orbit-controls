@@ -48,4 +48,4 @@ controls = new OrbitControls(camera[, domElement])
 
 #### Versioning
 
-Because of ThreeJS's versioning, the safest choice is to use `--save-exact` when installing this module (no tilde or caret). The minor version should line up with major ThreeJS releases, e.g. `0.69.0` => `r69`. Please submit a PR or issue if you notice any issues going forward. 
+This uses an unusual versioning system to better support ThreeJS's (lack of) versioning. The major version of this repo will line up with ThreeJS releases (`69.0.0` => `r69`). The minor will be reserved for any new features, and patch for bug fixes and documentation/readme updates. In some rare cases, a minor feature may introduce a breaking change; so it's generally safest to use tilde or `--save-exact` for this module.

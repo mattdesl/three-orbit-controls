@@ -1,6 +1,6 @@
 {
   "name": "three-orbit-controls",
-  "version": "0.69.0",
+  "version": "69.0.0",
   "description": "orbit controls for ThreeJS",
   "main": "index.js",
   "license": "MIT",
@@ -9,7 +9,8 @@
     "email": "dave.des@gmail.com",
     "url": "https://github.com/mattdesl"
   },
-  "dependencies": {},
+  "dependencies": {
+  },
   "devDependencies": {
     "canvas-testbed": "^1.0.3",
     "scriptjs": "^2.5.7"
