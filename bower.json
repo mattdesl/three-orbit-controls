@@ -1,0 +1,26 @@
+{
+  "name": "three-orbit-controls",
+  "main": "index.js",
+  "version": "0.69.0",
+  "authors": [
+    "mattdesl <dave.des@gmail.com>"
+  ],
+  "description": "three orbit controller",
+  "keywords": [
+    "three",
+    "js",
+    "orbit",
+    "controller"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "three.js": "mrdoob/three.js#r69"
+  }
+}
