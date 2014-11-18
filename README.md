@@ -36,7 +36,7 @@ function render(gl, width, height) {
 
 [![NPM](https://nodei.co/npm/three-orbit-controls.png)](https://nodei.co/npm/three-orbit-controls/)
 
-#### `OrbitControls = create(THREE)`
+#### `OrbitControls = require('three-orbit-controls')(THREE)`
 
 This module exports a function which accepts an instance of THREE, and returns an OrbitControls class. This allows you to use the module with CommonJS, globals, etc.
 
