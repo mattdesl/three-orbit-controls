@@ -2,7 +2,7 @@
 
 [![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)
 
-ThreeJS OrbitControls as an npm module. See `test.js` (uses beefy and bower). 
+ThreeJS OrbitControls as an npm module. See [test](#testing) for an example.
 
 ```js
 var THREE = require('three')
@@ -49,3 +49,8 @@ controls = new OrbitControls(camera[, domElement])
 #### Versioning
 
 This uses an unusual versioning system to better support ThreeJS's (lack of) versioning. The major version of this repo will line up with ThreeJS releases (`69.0.0` => `r69`). The minor will be reserved for any new features, and patch for bug fixes and documentation/readme updates. In some rare cases, a minor feature may introduce a breaking change; so it's generally safest to use tilde or `--save-exact` for this module.
+
+
+## testing
+
+Git clone, `npm install` and then run `npm start` to spin up a development server. Open `localhost:9966` in your browser to see the `test.js` file in action. 
