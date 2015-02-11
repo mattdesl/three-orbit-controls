@@ -261,7 +261,7 @@ module.exports = function(THREE) {
 
             phi = Math.atan2( Math.sqrt( offset.x * offset.x + offset.z * offset.z ), offset.y );
 
-            if ( this.autoRotate ) {
+            if ( this.autoRotate && state === STATE.NONE ) {
 
                 this.rotateLeft( getAutoRotationAngle() );
 
