@@ -1,6 +1,6 @@
 {
   "name": "three-orbit-controls",
-  "version": "69.0.4",
+  "version": "69.0.5",
   "description": "orbit controls for ThreeJS",
   "main": "index.js",
   "license": "MIT",
