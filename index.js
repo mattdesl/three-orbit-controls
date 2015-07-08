@@ -450,7 +450,7 @@ module.exports = function(THREE) {
 
         }
 
-        function onMouseUp( /* event */ ) {
+        function onMouseUp( event ) {
 
             if ( scope.enabled === false ) return;
 
