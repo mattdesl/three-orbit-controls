@@ -2,7 +2,7 @@ module.exports = function(THREE) {
     var MOUSE = THREE.MOUSE
     if (!MOUSE)
         MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2 };
-    
+
     /**
      * @author qiao / https://github.com/qiao
      * @author mrdoob / http://mrdoob.com
@@ -19,12 +19,6 @@ module.exports = function(THREE) {
     //    Orbit - left mouse / touch: one finger move
     //    Zoom - middle mouse, or mousewheel / touch: two finger spread or squish
     //    Pan - right mouse, or arrow keys / touch: three finter swipe
-    //
-    // This is a drop-in replacement for (most) TrackballControls used in examples.
-    // That is, include this js file and wherever you see:
-    //      controls = new THREE.TrackballControls( camera );
-    //      controls.target.z = 150;
-    // Simple substitute "OrbitControls" and the control should work as-is.
 
     function OrbitControls ( object, domElement ) {
 
@@ -48,9 +42,13 @@ module.exports = function(THREE) {
         this.noZoom = false;
         this.zoomSpeed = 1.0;
 
-        // Limits to how far you can dolly in and out
+        // Limits to how far you can dolly in and out ( PerspectiveCamera only )
         this.minDistance = 0;
         this.maxDistance = Infinity;
+
+        // Limits to how far you can zoom in and out ( OrthographicCamera only )
+        this.minZoom = 0;
+        this.maxZoom = Infinity;
 
         // Set to true to disable this control
         this.noRotate = false;
@@ -123,6 +121,7 @@ module.exports = function(THREE) {
 
         this.target0 = this.target.clone();
         this.position0 = this.object.position.clone();
+        this.zoom0 = this.object.zoom;
 
         // so camera.up is the orbit axis
 
@@ -132,8 +131,8 @@ module.exports = function(THREE) {
         // events
 
         var changeEvent = { type: 'change' };
-        var startEvent = { type: 'start'};
-        var endEvent = { type: 'end'};
+        var startEvent = { type: 'start' };
+        var endEvent = { type: 'end' };
 
         this.rotateLeft = function ( angle ) {
 
@@ -191,7 +190,7 @@ module.exports = function(THREE) {
 
             var element = scope.domElement === document ? scope.domElement.body : scope.domElement;
 
-            if ( scope.object.fov !== undefined ) {
+            if ( scope.object instanceof THREE.PerspectiveCamera ) {
 
                 // perspective
                 var position = scope.object.position;
@@ -205,7 +204,7 @@ module.exports = function(THREE) {
                 scope.panLeft( 2 * deltaX * targetDistance / element.clientHeight );
                 scope.panUp( 2 * deltaY * targetDistance / element.clientHeight );
 
-            } else if ( scope.object.top !== undefined ) {
+            } else if ( scope.object instanceof THREE.OrthographicCamera ) {
 
                 // orthographic
                 scope.panLeft( deltaX * (scope.object.right - scope.object.left) / element.clientWidth );
@@ -228,7 +227,21 @@ module.exports = function(THREE) {
 
             }
 
-            scale /= dollyScale;
+            if ( scope.object instanceof THREE.PerspectiveCamera ) {
+
+                scale /= dollyScale;
+
+            } else if ( scope.object instanceof THREE.OrthographicCamera ) {
+
+                scope.object.zoom = Math.max( this.minZoom, Math.min( this.maxZoom, this.object.zoom * dollyScale ) );
+                scope.object.updateProjectionMatrix();
+                scope.dispatchEvent( changeEvent );
+
+            } else {
+
+                console.warn( 'WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled.' );
+
+            }
 
         };
 
@@ -240,7 +253,21 @@ module.exports = function(THREE) {
 
             }
 
-            scale *= dollyScale;
+            if ( scope.object instanceof THREE.PerspectiveCamera ) {
+
+                scale *= dollyScale;
+
+            } else if ( scope.object instanceof THREE.OrthographicCamera ) {
+
+                scope.object.zoom = Math.max( this.minZoom, Math.min( this.maxZoom, this.object.zoom / dollyScale ) );
+                scope.object.updateProjectionMatrix();
+                scope.dispatchEvent( changeEvent );
+
+            } else {
+
+                console.warn( 'WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled.' );
+
+            }
 
         };
 
@@ -326,6 +353,10 @@ module.exports = function(THREE) {
 
             this.target.copy( this.target0 );
             this.object.position.copy( this.position0 );
+            this.object.zoom = this.zoom0;
+
+            this.object.updateProjectionMatrix();
+            this.dispatchEvent( changeEvent );
 
             this.update();
 
@@ -425,7 +456,7 @@ module.exports = function(THREE) {
 
                     scope.dollyIn();
 
-                } else {
+                } else if ( dollyDelta.y < 0 ) {
 
                     scope.dollyOut();
 
@@ -450,7 +481,7 @@ module.exports = function(THREE) {
 
         }
 
-        function onMouseUp( event ) {
+        function onMouseUp( /* event */ ) {
 
             if ( scope.enabled === false ) return;
 
@@ -484,7 +515,7 @@ module.exports = function(THREE) {
 
                 scope.dollyOut();
 
-            } else {
+            } else if ( delta < 0 ) {
 
                 scope.dollyIn();
 
@@ -617,7 +648,7 @@ module.exports = function(THREE) {
 
                         scope.dollyOut();
 
-                    } else {
+                    } else if ( dollyDelta.y < 0 ) {
 
                         scope.dollyIn();
 
@@ -673,6 +704,7 @@ module.exports = function(THREE) {
 
         // force an update at start
         this.update();
+
     };
 
     OrbitControls.prototype = Object.create( THREE.EventDispatcher.prototype );
