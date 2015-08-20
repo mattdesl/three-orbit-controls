@@ -56,4 +56,4 @@ If you see any version issues, open a ticket!
 
 ## testing
 
-Git clone, `npm install` and then run `npm start` to spin up a development server. Open `localhost:9966` in your browser to see the `test.js` file in action. 
+Git clone, `npm install` and then run `npm start` to spin up a development server. Open `localhost:9966` in your browser to see the `test.js` file in action.

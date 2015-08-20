@@ -3,7 +3,7 @@ var createApp = require('canvas-testbed')
 var THREE = require('three')
 var OrbitControls = require('./')(THREE)
 
-createApp(render, start, { 
+createApp(render, start, {
     context: 'webgl',
     onResize: resize
 })
@@ -23,7 +23,7 @@ function start(gl, width, height) {
 
     // camera = new THREE.OrthographicCamera( 1 / - 2, 1 / 2, 1 / 2, 1 / - 2, 1, 1000 )
     // camera.position.set(0, 0, -1)
-    
+
     camera = new THREE.PerspectiveCamera(50, width/height, 1, 1000)
     camera.position.set(0, 1, -3)
     camera.lookAt(new THREE.Vector3())
@@ -48,6 +48,3 @@ function resize(width, height) {
     camera.aspect = width/height
     camera.updateProjectionMatrix()
 }
-
-
-    
