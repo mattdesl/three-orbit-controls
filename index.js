@@ -1,16 +1,16 @@
 module.exports = function(THREE) {
-    var MOUSE = THREE.MOUSE
-    if (!MOUSE)
-        MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2 };
+	var MOUSE = THREE.MOUSE
+	if (!MOUSE)
+	    MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2 };
 
-    /**
-     * @author qiao / https://github.com/qiao
-     * @author mrdoob / http://mrdoob.com
-     * @author alteredq / http://alteredqualia.com/
-     * @author WestLangley / http://github.com/WestLangley
-     * @author erich666 / http://erichaines.com
-     */
-    /*global THREE, console */
+	/**
+	 * @author qiao / https://github.com/qiao
+	 * @author mrdoob / http://mrdoob.com
+	 * @author alteredq / http://alteredqualia.com/
+	 * @author WestLangley / http://github.com/WestLangley
+	 * @author erich666 / http://erichaines.com
+	 */
+	/*global THREE, console */
 
 	function OrbitConstraint ( object ) {
 
@@ -811,8 +811,8 @@ module.exports = function(THREE) {
 
 	};
 
-    OrbitControls.prototype = Object.create( THREE.EventDispatcher.prototype );
-    OrbitControls.prototype.constructor = OrbitControls;
+	OrbitControls.prototype = Object.create( THREE.EventDispatcher.prototype );
+	OrbitControls.prototype.constructor = OrbitControls;
 
 	Object.defineProperties( OrbitControls.prototype, {
 
@@ -1115,5 +1115,5 @@ module.exports = function(THREE) {
 
 	} );
 
-    return OrbitControls;
+	return OrbitControls;
 }
