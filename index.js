@@ -1,7 +1,7 @@
 module.exports = function(THREE) {
 	var MOUSE = THREE.MOUSE
 	if (!MOUSE)
-	    MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2 };
+		MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2 };
 
 	/**
 	 * @author qiao / https://github.com/qiao
@@ -278,7 +278,7 @@ module.exports = function(THREE) {
 
 				if ( zoomChanged ||
 					 lastPosition.distanceToSquared( this.object.position ) > EPS ||
-				    8 * ( 1 - lastQuaternion.dot( this.object.quaternion ) ) > EPS ) {
+					8 * ( 1 - lastQuaternion.dot( this.object.quaternion ) ) > EPS ) {
 
 					lastPosition.copy( this.object.position );
 					lastQuaternion.copy( this.object.quaternion );
