@@ -123,16 +123,20 @@ module.exports = function(THREE) {
         this.position0 = this.object.position.clone();
         this.zoom0 = this.object.zoom;
 
-        // so camera.up is the orbit axis
-
-        var quat = new THREE.Quaternion().setFromUnitVectors( object.up, new THREE.Vector3( 0, 1, 0 ) );
-        var quatInverse = quat.clone().inverse();
-
         // events
 
         var changeEvent = { type: 'change' };
         var startEvent = { type: 'start' };
         var endEvent = { type: 'end' };
+
+        this.updateQuat = function () {
+            // so camera.up is the orbit axis
+            this.quat = new THREE.Quaternion().setFromUnitVectors( this.object.up, new THREE.Vector3( 0, 1, 0 ) );
+            this.quatInverse = this.quat.clone().inverse();
+        }
+
+        // initialize quat and quatInverse
+        this.updateQuat();
 
         this.rotateLeft = function ( angle ) {
 
@@ -273,12 +277,14 @@ module.exports = function(THREE) {
 
         this.update = function () {
 
+            this.updateQuat();
+
             var position = this.object.position;
 
             offset.copy( position ).sub( this.target );
 
             // rotate offset to "y-axis-is-up" space
-            offset.applyQuaternion( quat );
+            offset.applyQuaternion( this.quat );
 
             // angle from z-axis around y-axis
 
@@ -319,7 +325,7 @@ module.exports = function(THREE) {
             offset.z = radius * Math.sin( phi ) * Math.cos( theta );
 
             // rotate offset back to "camera-up-vector-is-up" space
-            offset.applyQuaternion( quatInverse );
+            offset.applyQuaternion( this.quatInverse );
 
             position.copy( this.target ).add( offset );
 
