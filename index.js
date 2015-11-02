@@ -80,6 +80,9 @@ module.exports = function(THREE) {
 
         // Mouse buttons
         this.mouseButtons = { ORBIT: MOUSE.LEFT, ZOOM: MOUSE.MIDDLE, PAN: MOUSE.RIGHT };
+        
+        this.quat = new THREE.Quaternion();
+        this.quatInverse = this.quat.clone().inverse();
 
         ////////////
         // internals
@@ -112,7 +115,8 @@ module.exports = function(THREE) {
 
         var lastPosition = new THREE.Vector3();
         var lastQuaternion = new THREE.Quaternion();
-
+        var yUpVector = new THREE.Vector3( 0, 1, 0 );
+        
         var STATE = { NONE : -1, ROTATE : 0, DOLLY : 1, PAN : 2, TOUCH_ROTATE : 3, TOUCH_DOLLY : 4, TOUCH_PAN : 5 };
 
         var state = STATE.NONE;
@@ -131,8 +135,8 @@ module.exports = function(THREE) {
 
         this.updateQuat = function () {
             // so camera.up is the orbit axis
-            this.quat = new THREE.Quaternion().setFromUnitVectors( this.object.up, new THREE.Vector3( 0, 1, 0 ) );
-            this.quatInverse = this.quat.clone().inverse();
+            this.quat.setFromUnitVectors( this.object.up, yUpVector );
+            this.quatInverse.copy( this.quat ).inverse();
         }
 
         // initialize quat and quatInverse
