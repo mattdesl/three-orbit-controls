@@ -1,0 +1,19 @@
+{
+  "name": "three-orbit-controls",
+  "main": "index.js",
+  "dependencies": {
+    "three": "^0.72.0"
+  },
+  "keywords": [
+    "threejs", "three", "orbit", "controls"
+  ],
+  "authors": [
+    "Matt DesLauriers <dave.des@gmail.com>",
+  ],
+  "ignore": [
+    ".gitignore",
+    ".npmignore",    
+    "package.json",
+    "test.js"
+  ]
+}
