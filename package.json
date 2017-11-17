@@ -13,12 +13,18 @@
   "devDependencies": {
     "browserify": "^8.1.1",
     "canvas-testbed": "^1.0.3",
+    "chai": "^4.1.2",
+    "jsdom": "^11.3.0",
+    "mocha": "^4.0.1",
     "scriptjs": "^2.5.7",
+    "sinon": "^4.1.2",
+    "sinon-chai": "^2.14.0",
     "three": "^0.82.1",
     "wzrd": "^1.2.1"
   },
   "scripts": {
-    "start": "wzrd test.js"
+    "start": "wzrd demo.js",
+    "test": "mocha ./tests{,/**/}**test.js --recursive"
   },
   "keywords": [
     "orbit",
