@@ -76,6 +76,21 @@ module.exports = function( THREE ) {
 		// Mouse buttons
 		this.mouseButtons = { ORBIT: THREE.MOUSE.LEFT, ZOOM: THREE.MOUSE.MIDDLE, PAN: THREE.MOUSE.RIGHT };
 
+    // implement scrolling performance best practices according to
+    // https://developers.google.com/web/tools/lighthouse/audits/passive-event-listeners
+    var browserSupportsPassiveEvents = false;
+    try {
+      var opts = Object.defineProperty({}, 'passive', {
+        get: function() {
+          browserSupportsPassiveEvents = true
+          return true
+        }
+      })
+      window.addEventListener('testPassive', null, opts)
+      window.removeEventListener('testPassive', null, opts)
+    } catch (e) {}
+    this.globalEventListenerOptions = browserSupportsPassiveEvents ? {capture: false, passive: true} : false;
+
 		// for reset
 		this.target0 = this.target.clone();
 		this.position0 = this.object.position.clone();
@@ -874,11 +889,11 @@ module.exports = function( THREE ) {
 		scope.domElement.addEventListener( 'contextmenu', onContextMenu, false );
 
 		scope.domElement.addEventListener( 'mousedown', onMouseDown, false );
-		scope.domElement.addEventListener( 'wheel', onMouseWheel, false );
+		scope.domElement.addEventListener( 'wheel', onMouseWheel, this.globalEventListenerOptions);
 
-		scope.domElement.addEventListener( 'touchstart', onTouchStart, false );
+		scope.domElement.addEventListener( 'touchstart', onTouchStart, this.globalEventListenerOptions);
 		scope.domElement.addEventListener( 'touchend', onTouchEnd, false );
-		scope.domElement.addEventListener( 'touchmove', onTouchMove, false );
+		scope.domElement.addEventListener( 'touchmove', onTouchMove, this.globalEventListenerOptions);
 
 		window.addEventListener( 'keydown', onKeyDown, false );
 
