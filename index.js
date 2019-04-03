@@ -81,6 +81,11 @@ module.exports = function( THREE ) {
 		this.position0 = this.object.position.clone();
 		this.zoom0 = this.object.zoom;
 
+		// For user interaction events
+		this.interactionEventStarted = false;
+		this.interactionEventStartedTimeout = null;
+		this.interactionEventStartedTimeoutInterval = 0;
+
 		//
 		// public methods
 		//
@@ -237,6 +242,35 @@ module.exports = function( THREE ) {
 		var changeEvent = { type: 'change' };
 		var startEvent = { type: 'start' };
 		var endEvent = { type: 'end' };
+
+		var interactionStartEvent = { type: 'interactionStart' };
+		var interactionEndEvent = { type: 'interactionEnd' };
+
+		function handleInteractionEventStart() {
+			if (scope.interactionEventStarted === false) {
+				scope.interactionEventStarted = true;
+				scope.dispatchEvent(interactionStartEvent);
+			}
+		}
+
+		function handleInteractionEventEnd() {
+			if (scope.interactionEventStarted === true) {
+				if (scope.interactionEventStartedTimeout !== null && scope.interactionEventStartedTimeout >= 0) {
+					clearTimeout(scope.interactionEventStartedTimeout);
+					scope.interactionEventStartedTimeout = null;
+				}
+
+				scope.interactionEventStartedTimeout = setTimeout(function() {
+					scope.interactionEventStarted = false;
+					scope.dispatchEvent( interactionEndEvent );
+				}, scope.interactionEventStartedTimeoutInterval);
+			}
+		}
+
+		function handleInteractionEvent() {
+			handleInteractionEventStart();
+			handleInteractionEventEnd();
+		}
 
 		var STATE = { NONE : - 1, ROTATE : 0, DOLLY : 1, PAN : 2, TOUCH_ROTATE : 3, TOUCH_DOLLY : 4, TOUCH_PAN : 5 };
 
@@ -448,6 +482,8 @@ module.exports = function( THREE ) {
 
 			scope.update();
 
+			handleInteractionEventStart();
+
 		}
 
 		function handleMouseMoveDolly( event ) {
@@ -472,6 +508,8 @@ module.exports = function( THREE ) {
 
 			scope.update();
 
+			handleInteractionEventStart();
+
 		}
 
 		function handleMouseMovePan( event ) {
@@ -488,11 +526,15 @@ module.exports = function( THREE ) {
 
 			scope.update();
 
+			handleInteractionEventStart()
+
 		}
 
 		function handleMouseUp( event ) {
 
 			//console.log( 'handleMouseUp' );
+
+			handleInteractionEventEnd()
 
 		}
 
@@ -511,6 +553,8 @@ module.exports = function( THREE ) {
 			}
 
 			scope.update();
+
+			handleInteractionEvent();
 
 		}
 
@@ -592,6 +636,8 @@ module.exports = function( THREE ) {
 
 			scope.update();
 
+			handleInteractionEventStart()
+
 		}
 
 		function handleTouchMoveDolly( event ) {
@@ -621,6 +667,8 @@ module.exports = function( THREE ) {
 
 			scope.update();
 
+			handleInteractionEventStart();
+
 		}
 
 		function handleTouchMovePan( event ) {
@@ -637,11 +685,15 @@ module.exports = function( THREE ) {
 
 			scope.update();
 
+			handleInteractionEventEnd();
+
 		}
 
 		function handleTouchEnd( event ) {
 
 			//console.log( 'handleTouchEnd' );
+
+			handleInteractionEventEnd();
 
 		}
 
